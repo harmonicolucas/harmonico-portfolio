@@ -23,7 +23,18 @@ function readEmbedded(): SiteContent | null {
   }
 }
 
-const embedded = typeof document !== "undefined" ? readEmbedded() : null;
+function readStoredPublished(): SiteContent | null {
+  try {
+    const raw = localStorage.getItem("pf-pages-doc");
+    if (!raw) return null;
+    const published = (JSON.parse(raw) as { published?: SiteContent }).published;
+    return published ?? null;
+  } catch {
+    return null;
+  }
+}
+
+const embedded = typeof document !== "undefined" ? readStoredPublished() ?? readEmbedded() : null;
 const staticSite = import.meta.env.VITE_STATIC === "1" && !!embedded;
 
 export function ContentProvider({ children }: { children: ReactNode }) {
@@ -33,11 +44,10 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     {
       initialData: !preview && embedded ? { content: embedded, publishedAt: new Date(0), preview: false } : undefined,
       initialDataUpdatedAt: staticSite ? Date.now() : 0,
-      staleTime: staticSite ? Infinity : 15_000,
+      staleTime: preview ? 0 : staticSite ? 60_000 : 15_000,
       refetchOnWindowFocus: !staticSite,
       refetchInterval: staticSite ? false : preview ? 5_000 : 60_000,
       retry: staticSite ? false : 2,
-      enabled: !(staticSite && !preview),
     },
   );
   const value = useMemo<Ctx>(

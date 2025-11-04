@@ -6,7 +6,12 @@ import { createRoot } from "react-dom/client";
 import superjson from "superjson";
 import App from "./App";
 import { startLogin } from "./const";
+import { staticFetch } from "./staticApi";
 import "./index.css";
+
+if (import.meta.env.VITE_STATIC === "1" && window.location.pathname.length > 1 && window.location.pathname.endsWith("/")) {
+  history.replaceState(null, "", window.location.pathname.replace(/\/+$/, "") + window.location.search + window.location.hash);
+}
 
 const queryClient = new QueryClient();
 
@@ -63,6 +68,10 @@ const trpcClient = trpc.createClient({
         return { "x-pf-client": "1" };
       },
       fetch(input, init) {
+        if (import.meta.env.VITE_STATIC === "1") {
+          const local = staticFetch(input, init);
+          return Promise.resolve(local).then(response => response ?? globalThis.fetch(input, { ...(init ?? {}), credentials: "include" }));
+        }
         return globalThis.fetch(input, {
           ...(init ?? {}),
           credentials: "include",

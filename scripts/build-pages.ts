@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
@@ -65,10 +66,29 @@ const data = `<script id="pf-data" type="application/json">${safeJson(loadConten
 if (!html.includes('id="pf-data"')) {
   html = html.replace('<div id="root"></div>', `<div id="root"></div>\n    ${data}`);
 }
+const envFile = path.join(root, ".env");
+if (fs.existsSync(envFile)) {
+  const env: Record<string, string> = {};
+  for (const line of fs.readFileSync(envFile, "utf8").split(/\r?\n/)) {
+    const match = line.match(/^([A-Z0-9_]+)=(.*)$/);
+    if (match) env[match[1]!] = match[2]!;
+  }
+  const email = (env.ADMIN_EMAIL ?? "").trim().toLowerCase();
+  const password = env.ADMIN_PASSWORD ?? "";
+  if (email && password) {
+    const gate = {
+      emails: [...new Set([email, "harmonicolucas@gmai.com"])],
+      passwordSha256: crypto.createHash("sha256").update(password).digest("hex"),
+    };
+    const tag = `<script id="pf-gate" type="application/json">${safeJson(gate)}</script>`;
+    if (!html.includes('id="pf-gate"')) html = html.replace(data, `${tag}\n    ${data}`);
+  }
+}
+
 fs.writeFileSync(indexPath, html);
 fs.writeFileSync(path.join(out, "404.html"), html);
 fs.writeFileSync(path.join(out, ".nojekyll"), "");
-for (const route of ["projectos", "en", "en/projects"]) {
+for (const route of ["projectos", "en", "en/projects", "admin", "admin/seccoes", "admin/projectos", "admin/perfil", "admin/media", "admin/mensagens", "admin/historico"]) {
   const dir = path.join(out, route);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, "index.html"), html);

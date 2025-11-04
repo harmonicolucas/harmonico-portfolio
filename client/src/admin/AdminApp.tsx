@@ -316,6 +316,11 @@ function Shell({ onLogout, userName }: { onLogout: () => Promise<void>; userName
       </Sheet>
 
       <div className="lg:pl-60">
+        {import.meta.env.VITE_STATIC === "1" && (
+          <p className="border-b bg-amber-50 px-4 py-2 text-xs text-amber-950">
+            As alterações ficam guardadas neste navegador. Para os outros visitantes, o site continua com a versão publicada no GitHub Pages.
+          </p>
+        )}
         <header className="sticky top-0 z-30 flex flex-wrap items-center gap-2 border-b bg-background/95 px-4 py-3 backdrop-blur">
           <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setMobileNav(true)} aria-label="Abrir menu">
             <Menu className="size-5" />
