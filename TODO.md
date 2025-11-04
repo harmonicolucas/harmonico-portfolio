@@ -1,0 +1,11 @@
+# Resultados do projecto
+
+- [x] **Área pública fiel ao website de referência.** A página pública mantém a estrutura, disposição, tipografia, cores, margens, espaçamentos, cartões, projectos, transições, animações, navegação e comportamento responsivo do modelo fornecido. Os conteúdos são adaptados a Harmónico Augusto, usam as fotografias fornecidas e estão disponíveis em Português e Inglês, incluindo temas claro e escuro, SEO, acessibilidade por teclado e preferência por movimento reduzido.
+
+- [x] **Painel administrativo privado funcional.** A rota `/admin` está protegida por autenticação Manus e verificação de papel de administrador no servidor. O painel permite gerir dados de perfil, secções, ordem, projectos, experiências, formação, competências, certificações, conquistas, navegação, rodapé, SEO, CV, media, mensagens, traduções PT/EN, rascunhos, pré-visualização, publicação e histórico, com validação, confirmação para acções destrutivas e limites de ficheiros.
+
+- [x] **Dados e segurança persistentes.** O conteúdo publicado é persistido em MySQL; media e documentos são tratados pelo armazenamento durável; o backend valida os pedidos administrativos, protege contra CSRF, valida formato/assinatura/tamanho de uploads, usa sessões seguras e mantém os segredos fora do cliente e do repositório.
+
+- [ ] **Produção no Manus.** Publicar o checkpoint canónico actual usando o container definido em `Dockerfile`, confirmar que `/api/health` responde, que as páginas `/`, `/en`, `/projectos`, `/en/projects` e `/admin` estão disponíveis e comunicar exclusivamente o URL permanente realmente devolvido pela plataforma. Não comunicar `harmonicolucas.manus.computer` como activo sem confirmação da plataforma; preservar todos os dados e o design existentes durante o deployment.
+
+- [ ] **Possível endereço preferido.** Verificar se a plataforma pode atribuir `harmonicolucas.manus.computer`. Se não houver uma operação de domínio/alias disponível ou o endereço não estiver atribuído no resultado da produção, entregar o URL de produção gerado pelo Manus e explicar a limitação sem inventar um alias.

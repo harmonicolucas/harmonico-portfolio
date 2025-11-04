@@ -1,0 +1,17 @@
+{
+  "routes": [
+    { "path": "/", "title": "Início (PT)" },
+    { "path": "/projectos", "title": "Projectos (PT)" },
+    { "path": "/en", "title": "Home (EN)" },
+    { "path": "/en/projects", "title": "Work (EN)" },
+    { "path": "/admin", "title": "Painel — Visão geral" },
+    { "path": "/admin/seccoes", "title": "Painel — Secções" },
+    { "path": "/admin/seccoes/:id", "title": "Painel — Editar secção" },
+    { "path": "/admin/projectos", "title": "Painel — Projectos" },
+    { "path": "/admin/projectos/:id", "title": "Painel — Editar projecto" },
+    { "path": "/admin/perfil", "title": "Painel — Perfil e definições" },
+    { "path": "/admin/media", "title": "Painel — Media" },
+    { "path": "/admin/mensagens", "title": "Painel — Mensagens" },
+    { "path": "/admin/historico", "title": "Painel — Histórico" }
+  ]
+}
